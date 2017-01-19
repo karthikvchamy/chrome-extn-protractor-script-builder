@@ -1,0 +1,33 @@
+{
+  "name": "Test Script Builder",
+  "version": "1.0",
+  "description": "Automated  End-to-End Test Script Builder for Protractor",
+  "devtools_page": "devtools.html",
+  "manifest_version": 2,
+  "icons":{"48": "vz-logo.png"},
+  "web_accessible_resources": [
+    "*"
+  ],
+  "permissions": [
+    "experimental",
+    "tabs"
+  ],
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {"default": "Ctrl+Shift+Z"}
+    }
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent":false
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": ["jquery.min.js", "content-script.js"]
+    }
+  ]
+}

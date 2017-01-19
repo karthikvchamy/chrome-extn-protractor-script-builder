@@ -1,0 +1,7 @@
+/* BASE STYLES */
+.app-testScriptBuilder {
+  color: inherit;
+}
+.app-testScriptBuilder .ace_editor {
+  min-height: 400px;
+}

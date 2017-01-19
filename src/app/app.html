@@ -1,0 +1,119 @@
+<div ng-app="test-script-builder" class="app-testScriptBuilder" id="panelContainer" ng-controller="PanelCtrl">
+  <!-- inject:vendor:css -->
+  <!-- endinject -->
+
+  <!-- inject:css -->
+  <!-- endinject -->
+
+
+  <div class="container-fluid">
+    <div class="page-header">
+      <h2>Test Script Builder</h2>
+    </div>
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">
+        <div class="form-horizontal">
+          <div class="form-group" style="margin-bottom:0px">
+            <label for="tsName" class="col-sm-2 control-label">Name :</label>
+
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="tsName" placeholder="TestSpec Name Required" ng-model="testSpec.name">
+            </div>
+            <div class="col-sm-2">
+              <div class="pull-right">
+                <button type="button" class="btn btn-primary"
+                        ng-class="{'show': scriptMode,'hide': !scriptMode}"
+                        ng-click="showScript()">Show TestSpec</button>
+                <button type="button" class="btn btn-primary"
+                        ng-class="{'hide': scriptMode,'show': !scriptMode}"
+                        ng-click="showScript()">Build Script</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body" ng-class="{'show': !scriptMode,'hide': scriptMode}">
+        <div class="col-sm-4" style="padding-left:0px">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <button type="button" class="btn btn-link" ng-click="newTestCase()" style="padding:0px">
+                <span class="fa fa-plus fa-lg"></span>
+                <span style="margin-left:5px">Add New TestCase</span></button>
+            </div>
+
+            <ul class="list-group" style="margin-bottom:0px;min-height:400px;overflow:auto">
+              <li class="list-group-item" ng-repeat="tc in testSpec.testcases | reverse" ng-mouseover="showdel = true"
+                  ng-mouseout="showdel = false">
+                <a href="#" ng-click="showTestCase(tc)">
+                  {{tc.name}} </a>
+                <span><a href="#" ng-class="{'show': showdel,'hide': !showdel}" class="pull-right"
+                         ng-click="deleteTestCase($index)">delete</a></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <div class="row">
+            <form class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="tcName" class="col-sm-3 control-label">TestCase Name :</label>
+
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" id="tcName" placeholder="TestCase Name Required"
+                         ng-model="testCase.name">
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="row">
+            <table class="table" style="border-bottom: 1px solid #ddd; margin-bottom:10px">
+              <tbody>
+              <tr style="text-align: center">
+                <td colspan="3">
+                  <button type="button" id="btnStart" class="btn btn-danger" ng-click="startCapture()"
+                          >{{testCase.isStarted ? 'STOP Capture' : 'START Capture'}}
+                  </button>
+                  <button type="button" id="btnExpect" class="btn" ng-class="{'btn-default disabled': !testCase.isStarted,
+                  'btn-success': testCase.expectMode, 'btn-success': testCase.isStarted}"
+                          ng-disabled="!testCase.isStarted" ng-click="setExpectMode(true)">{{testCase.expectMode ? 'Turn OFF Expect Mode' : 'Turn ON Expect Mode'}}
+                  </button>
+                </td>
+              </tr>
+              <tr ng-repeat="event in testCase.events">
+                <td style="vertical-align: middle">
+                  event : {{event.type}} {{event.tag}} {{event.element_id? ' - id:' + event.element_id :''}} {{event.element_value && (event.type == 'fill' || event.type == 'expect') ? ' - value:' + event.element_value :''}}
+
+                </td>
+                <td style="width:105px">
+                  <input type="text" class="form-control" placeholder="sleep (ms)" ng-model="event.sleep"/>
+                </td>
+                <td style="width:50px">
+                  <button type="button" class="btn btn-link" ng-click="deleteEvent($index)">Delete</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="pull-right">
+              <button type="button" class="btn btn-primary" ng-click="saveTestCase()">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-body" ng-class="{'show': scriptMode,'hide': !scriptMode}">
+        <div ui-ace="{
+            mode: 'javascript'
+          }" ng-model="testScript"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- inject:vendor:js -->
+  <!-- endinject -->
+
+  <!-- inject:js -->
+  <!-- endinject -->
+</div>
+
